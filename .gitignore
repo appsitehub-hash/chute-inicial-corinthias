@@ -1,0 +1,23 @@
+# ...existing code...
+# Build / caches
+/build/
+/.gradle/
+
+# IDE
+/.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime artifacts / distributions
+app.jar
+run-windows.bat
+install-windows.ps1
+
+# Other generated files
+/reports/
+
+# Keep backups outside repo
+AppCorinthians_removed_backup_*

@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <times>
+    <!-- 20 teams, 20 players each -->
+    <!-- Team 1 -->
+    <time>
+      <nome>Team 1</nome>
+      <tecnico>Técnico 1</tecnico>
+      <avaliacao>7.0</avaliacao>
+      <jogadores>
+        <jogador><nome>Player1_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player1_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player1_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player1_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player1_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player1_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player1_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player1_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player1_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player1_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player1_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player1_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player1_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player1_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 2 -->
+    <time>
+      <nome>Team 2</nome>
+      <tecnico>Técnico 2</tecnico>
+      <avaliacao>6.8</avaliacao>
+      <jogadores>
+        <jogador><nome>Player2_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player2_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player2_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player2_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player2_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player2_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player2_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player2_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player2_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player2_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player2_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player2_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player2_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player2_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 3 -->
+    <time>
+      <nome>Team 3</nome>
+      <tecnico>Técnico 3</tecnico>
+      <avaliacao>7.2</avaliacao>
+      <jogadores>
+        <jogador><nome>Player3_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player3_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player3_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player3_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player3_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player3_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player3_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player3_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player3_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player3_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player3_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player3_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player3_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player3_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 4 -->
+    <time>
+      <nome>Team 4</nome>
+      <tecnico>Técnico 4</tecnico>
+      <avaliacao>6.9</avaliacao>
+      <jogadores>
+        <jogador><nome>Player4_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player4_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player4_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player4_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player4_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player4_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player4_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player4_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player4_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player4_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player4_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player4_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player4_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player4_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 5 -->
+    <time>
+      <nome>Team 5</nome>
+      <tecnico>Técnico 5</tecnico>
+      <avaliacao>7.1</avaliacao>
+      <jogadores>
+        <jogador><nome>Player5_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player5_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player5_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player5_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player5_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player5_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player5_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player5_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player5_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player5_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player5_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player5_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player5_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player5_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 6 -->
+    <time>
+      <nome>Team 6</nome>
+      <tecnico>Técnico 6</tecnico>
+      <avaliacao>6.6</avaliacao>
+      <jogadores>
+        <jogador><nome>Player6_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player6_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player6_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player6_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player6_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player6_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player6_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player6_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player6_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player6_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player6_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player6_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player6_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player6_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 7 -->
+    <time>
+      <nome>Team 7</nome>
+      <tecnico>Técnico 7</tecnico>
+      <avaliacao>6.7</avaliacao>
+      <jogadores>
+        <jogador><nome>Player7_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player7_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player7_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player7_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player7_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player7_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player7_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player7_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player7_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player7_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player7_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player7_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player7_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player7_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 8 -->
+    <time>
+      <nome>Team 8</nome>
+      <tecnico>Técnico 8</tecnico>
+      <avaliacao>7.4</avaliacao>
+      <jogadores>
+        <jogador><nome>Player8_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player8_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player8_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player8_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player8_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player8_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player8_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player8_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player8_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player8_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player8_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player8_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player8_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player8_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 9 -->
+    <time>
+      <nome>Team 9</nome>
+      <tecnico>Técnico 9</tecnico>
+      <avaliacao>6.9</avaliacao>
+      <jogadores>
+        <jogador><nome>Player9_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player9_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player9_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player9_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player9_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player9_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player9_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player9_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player9_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player9_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player9_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player9_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player9_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player9_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 10 -->
+    <time>
+      <nome>Team 10</nome>
+      <tecnico>Técnico 10</tecnico>
+      <avaliacao>7.3</avaliacao>
+      <jogadores>
+        <jogador><nome>Player10_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player10_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player10_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player10_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player10_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player10_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player10_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player10_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player10_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player10_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player10_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player10_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player10_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player10_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 11 -->
+    <time>
+      <nome>Team 11</nome>
+      <tecnico>Técnico 11</tecnico>
+      <avaliacao>6.5</avaliacao>
+      <jogadores>
+        <jogador><nome>Player11_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player11_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player11_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player11_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player11_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player11_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player11_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player11_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player11_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player11_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player11_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player11_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player11_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player11_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 12 -->
+    <time>
+      <nome>Team 12</nome>
+      <tecnico>Técnico 12</tecnico>
+      <avaliacao>7.6</avaliacao>
+      <jogadores>
+        <jogador><nome>Player12_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player12_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player12_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player12_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player12_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player12_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player12_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player12_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player12_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player12_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player12_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player12_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player12_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player12_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 13 -->
+    <time>
+      <nome>Team 13</nome>
+      <tecnico>Técnico 13</tecnico>
+      <avaliacao>6.8</avaliacao>
+      <jogadores>
+        <jogador><nome>Player13_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player13_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player13_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player13_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player13_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player13_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player13_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player13_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player13_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player13_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player13_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player13_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player13_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player13_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 14 -->
+    <time>
+      <nome>Team 14</nome>
+      <tecnico>Técnico 14</tecnico>
+      <avaliacao>7.5</avaliacao>
+      <jogadores>
+        <jogador><nome>Player14_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player14_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player14_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player14_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player14_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player14_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player14_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player14_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player14_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player14_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player14_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player14_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player14_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player14_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 15 -->
+    <time>
+      <nome>Team 15</nome>
+      <tecnico>Técnico 15</tecnico>
+      <avaliacao>6.4</avaliacao>
+      <jogadores>
+        <jogador><nome>Player15_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player15_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player15_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player15_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player15_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player15_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player15_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player15_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player15_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player15_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player15_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player15_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player15_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player15_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 16 -->
+    <time>
+      <nome>Team 16</nome>
+      <tecnico>Técnico 16</tecnico>
+      <avaliacao>7.2</avaliacao>
+      <jogadores>
+        <jogador><nome>Player16_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player16_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player16_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player16_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player16_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player16_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player16_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player16_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player16_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player16_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player16_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player16_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player16_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player16_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 17 -->
+    <time>
+      <nome>Team 17</nome>
+      <tecnico>Técnico 17</tecnico>
+      <avaliacao>6.7</avaliacao>
+      <jogadores>
+        <jogador><nome>Player17_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player17_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player17_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player17_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player17_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player17_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player17_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player17_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player17_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player17_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player17_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player17_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player17_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player17_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 18 -->
+    <time>
+      <nome>Team 18</nome>
+      <tecnico>Técnico 18</tecnico>
+      <avaliacao>6.6</avaliacao>
+      <jogadores>
+        <jogador><nome>Player18_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player18_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player18_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player18_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player18_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player18_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player18_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player18_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player18_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player18_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player18_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player18_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player18_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player18_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 19 -->
+    <time>
+      <nome>Team 19</nome>
+      <tecnico>Técnico 19</tecnico>
+      <avaliacao>7.8</avaliacao>
+      <jogadores>
+        <jogador><nome>Player19_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player19_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player19_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player19_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player19_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player19_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player19_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player19_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player19_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player19_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player19_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player19_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player19_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player19_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+
+    <!-- Team 20 -->
+    <time>
+      <nome>Team 20</nome>
+      <tecnico>Técnico 20</tecnico>
+      <avaliacao>7.9</avaliacao>
+      <jogadores>
+        <jogador><nome>Player20_1</nome><idade>7</idade><posicao>Atacante</posicao><categoria>Sub-8</categoria></jogador>
+        <jogador><nome>Player20_2</nome><idade>8</idade><posicao>Meio-campo</posicao><categoria>Sub-9</categoria></jogador>
+        <jogador><nome>Player20_3</nome><idade>9</idade><posicao>Zagueiro</posicao><categoria>Sub-10</categoria></jogador>
+        <jogador><nome>Player20_4</nome><idade>10</idade><posicao>Goleiro</posicao><categoria>Sub-11</categoria></jogador>
+        <jogador><nome>Player20_5</nome><idade>11</idade><posicao>Lateral</posicao><categoria>Sub-12</categoria></jogador>
+        <jogador><nome>Player20_6</nome><idade>12</idade><posicao>Atacante</posicao><categoria>Sub-13</categoria></jogador>
+        <jogador><nome>Player20_7</nome><idade>13</idade><posicao>Meio-campo</posicao><categoria>Sub-14</categoria></jogador>
+        <jogador><nome>Player20_8</nome><idade>14</idade><posicao>Zagueiro</posicao><categoria>Sub-15</categoria></jogador>
+        <jogador><nome>Player20_9</nome><idade>15</idade><posicao>Atacante</posicao><categoria>Sub-16</categoria></jogador>
+        <jogador><nome>Player20_10</nome><idade>16</idade><posicao>Meio-campo</posicao><categoria>Sub-17</categoria></jogador>
+        <jogador><nome>Player20_11</nome><idade>17</idade><posicao>Goleiro</posicao><categoria>Sub-18</categoria></jogador>
+        <jogador><nome>Player20_12</nome><idade>18</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_13</nome><idade>19</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_14</nome><idade>20</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_15</nome><idade>21</idade><posicao>Meio-campo</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_16</nome><idade>22</idade><posicao>Atacante</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_17</nome><idade>23</idade><posicao>Lateral</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_18</nome><idade>24</idade><posicao>Zagueiro</posicao><categoria>Sub-18+</categoria></jogador>
+        <jogador><nome>Player20_19</nome><idade>6</idade><posicao>Goleiro</posicao><categoria>Sub-7</categoria></jogador>
+        <jogador><nome>Player20_20</nome><idade>5</idade><posicao>Meio-campo</posicao><categoria>Sub-7</categoria></jogador>
+      </jogadores>
+    </time>
+  </times>
+  <competicoes>
+    <competicao>
+      <nome>Copa Escolinhas</nome>
+      <maxPerdas>2</maxPerdas>
+      <categorias/>
+      <participacoes>
+        <participacao>
+          <time>Timão Kids</time>
+          <categoria>Sub-8</categoria>
+        </participacao>
+        <participacao>
+          <time>Escola Verde</time>
+          <categoria>Sub-13</categoria>
+        </participacao>
+        <participacao>
+          <time>Paulista Academy</time>
+          <categoria>Sub-9</categoria>
+        </participacao>
+        <participacao>
+          <time>Futuro FC</time>
+          <categoria>Sub-7</categoria>
+        </participacao>
+      </participacoes>
+    </competicao>
+  </competicoes>
+</data>
