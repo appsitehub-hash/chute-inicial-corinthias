@@ -1,4 +1,4 @@
-name: Build Windows App-Image
+name: Build Windows Installer
 
 on:
   workflow_dispatch:
@@ -69,40 +69,47 @@ jobs:
           }
         shell: powershell
 
-      - name: Create app-image with jpackage
+      - name: Create Windows installer with jpackage
         run: |
           $jar = Get-ChildItem -Path .\build\libs -Filter "*all*.jar" -Recurse | Select-Object -First 1
           if (-not $jar) { Write-Error "No fat-jar found"; exit 1 }
-          $outDir = Join-Path $PWD "out"
-          jpackage --name "AppCorinthians" --input ".\build\libs" --main-jar $jar.Name --main-class "com.corinthians.app.AppCorinthiansKt" --type app-image --icon ".\IMG\Corinthians-Simbolo-Png.ico" --app-version "1.0.0" --dest $outDir
-          # jpackage creates a folder under $outDir\AppCorinthians
-          $appFolder = Join-Path $outDir "AppCorinthians"
-          if (-not (Test-Path $appFolder)) { Write-Error "App image folder not found"; exit 1 }
-          $zipPath = Join-Path $outDir "AppCorinthians-win.zip"
-          Write-Host "Zipping app-image to $zipPath"
-          Compress-Archive -Path "$appFolder\*" -DestinationPath $zipPath -Force
-          Write-Host "Zipped: $zipPath"
+          Write-Host "Found jar: $($jar.FullName)"
+          $iconPath = if (Test-Path "IMG\Corinthians-Simbolo-Png.ico") { Resolve-Path "IMG\Corinthians-Simbolo-Png.ico" } else { $null }
+          $jpackageArgs = @(
+            '--name', 'AppCorinthians',
+            '--input', '.\build\libs',
+            '--main-jar', $jar.Name,
+            '--main-class', 'com.corinthians.app.AppCorinthiansKt',
+            '--type', 'exe',
+            '--app-version', '1.0.0',
+            '--win-shortcut',
+            '--win-menu',
+            '--win-dir-chooser'
+          )
+          if ($iconPath) { $jpackageArgs += @('--icon', $iconPath) }
+          Write-Host "Running jpackage with args: $jpackageArgs"
+          jpackage @jpackageArgs --dest ".\out" | Write-Host
         shell: powershell
 
-      - name: Upload app-image (artifact)
+      - name: Upload installer (artifact)
         uses: actions/upload-artifact@v4
         with:
-          name: app-windows-appimage
-          path: out\AppCorinthians-win.zip
+          name: app-windows-installer
+          path: out\*.exe
 
-      - name: Upload app-image to transfer.sh and print URL
+      - name: Upload installer to transfer.sh and print URL
         run: |
-          $zip = Get-ChildItem -Path .\out -Filter "AppCorinthians-win.zip" -Recurse | Select-Object -First 1
-          if ($zip) {
-            Write-Host "Uploading $($zip.FullName) to transfer.sh"
-            $uri = "https://transfer.sh/" + $zip.Name
+          $installer = Get-ChildItem -Path .\out -Filter "*.exe" -Recurse | Select-Object -First 1
+          if ($installer) {
+            Write-Host "Uploading $($installer.FullName) to transfer.sh"
+            $uri = "https://transfer.sh/" + $installer.Name
             try {
-              $resp = Invoke-RestMethod -Uri $uri -Method Put -InFile $zip.FullName -UseBasicParsing
+              $resp = Invoke-RestMethod -Uri $uri -Method Put -InFile $installer.FullName -UseBasicParsing
               Write-Host "transfer.sh URL: $resp"
             } catch {
               Write-Host "Upload to transfer.sh failed: $_"
             }
           } else {
-            Write-Host "No app-image zip found in out\\ to upload"
+            Write-Host "No installer found in out\\ to upload"
           }
         shell: powershell

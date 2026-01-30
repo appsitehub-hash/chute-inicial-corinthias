@@ -51,6 +51,6 @@ if exist app.jar (
 )
 
 :: nothing available; guide the user
-necho No Kotlin compiler (kotlinc), Gradle wrapper, or app.jar found.
-necho Install Kotlin (kotlinc) or add gradlew to the repo. Alternatively build on Linux and provide the fat jar.
+echo No Kotlin compiler (kotlinc), Gradle wrapper, or app.jar found.
+echo Install Kotlin (kotlinc) or add gradlew to the repo. Alternatively build on Linux and provide the fat jar.
 exit /b 2
