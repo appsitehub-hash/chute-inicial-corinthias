@@ -4,6 +4,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 repositories {
     mavenCentral()
 }
@@ -18,8 +20,6 @@ application {
 }
 
 // Use jvm target for Kotlin compilation (don't force toolchain download)
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "17"
 }
