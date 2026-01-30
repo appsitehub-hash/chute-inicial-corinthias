@@ -1,0 +1,55 @@
+name: Build Windows Installer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Ensure Gradle wrapper
+        run: |
+          if (-not (Test-Path "gradlew.bat")) {
+            echo "Gradle wrapper not found, generating..."
+            choco install gradle -y || true
+            gradle wrapper || true
+          } else { echo "Gradle wrapper present" }
+        shell: powershell
+
+      - name: Install ImageMagick (optional)
+        run: choco install imagemagick -y
+        shell: powershell
+
+      - name: Build fat jar
+        run: .\gradlew.bat clean shadowJar --no-daemon
+
+      - name: Convert icon to ICO
+        run: |
+          if (Test-Path "IMG\Corinthians-Simbolo-Png.png") {
+            magick convert IMG\Corinthians-Simbolo-Png.png -define icon:auto-resize=64,48,32,16 IMG\Corinthians-Simbolo-Png.ico
+          }
+        shell: powershell
+
+      - name: Create installer with jpackage
+        run: |
+          $jar = Get-ChildItem -Path .\build\libs -Filter "*all*.jar" -Recurse | Select-Object -First 1
+          if (-not $jar) { Write-Error "No fat-jar found"; exit 1 }
+          jpackage --name "AppCorinthians" --input ".\build\libs" --main-jar $jar.Name --main-class "com.corinthians.app.AppCorinthiansKt" --type exe --icon ".\IMG\Corinthians-Simbolo-Png.ico" --app-version "1.0.0" --win-shortcut --win-menu --win-dir-chooser --dest ".\out"
+        shell: powershell
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-windows-installer
+          path: out\*.exe
