@@ -20,6 +20,7 @@ jobs:
 
       - name: Ensure Gradle wrapper
         run: |
+          Write-Host "Checking for Gradle wrapper..."
           if (-not (Test-Path "gradlew.bat")) {
             Write-Host "Gradle wrapper not found, attempting to generate..."
             try {
@@ -28,11 +29,16 @@ jobs:
             } catch {
               Write-Host "choco install gradle failed: $_"
             }
+
             if (Get-Command gradle -ErrorAction SilentlyContinue) {
               Write-Host "Running 'gradle wrapper' to generate wrapper files"
-              gradle wrapper
+              try {
+                gradle wrapper
+              } catch {
+                Write-Host "gradle wrapper failed: $_"
+              }
             } else {
-              Write-Host "gradle not available; skipping wrapper generation. Ensure gradlew is committed to the repo."
+              Write-Host "gradle not available; ensure 'gradlew.bat' is committed to the repo or install gradle in the runner."
             }
           } else {
             Write-Host "Gradle wrapper present"
@@ -72,7 +78,6 @@ jobs:
           if ($installer) {
             Write-Host "Uploading $($installer.FullName) to transfer.sh"
             $uri = "https://transfer.sh/" + $installer.Name
-            # Use Invoke-RestMethod PUT to upload
             try {
               $resp = Invoke-RestMethod -Uri $uri -Method Put -InFile $installer.FullName -UseBasicParsing
               Write-Host "transfer.sh URL: $resp"
