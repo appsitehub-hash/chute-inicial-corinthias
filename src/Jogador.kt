@@ -2,11 +2,13 @@ package com.corinthians.app
 
 import DB.XmlDatabase
 
-data class Jogador(var nome: String, var idade: Int, var posicao: String = "", var categoria: String = "") {
+data class Jogador(var nome: String, var idade: Int, var posicao: String = "", var categoria: String = "", var telefone: String = "") {
     init {
         if (categoria.isEmpty()) {
             categoria = defaultCategoriaForAge(idade)
         }
+        // normalize telefone formatting: trim
+        telefone = telefone.trim()
     }
 
     companion object {

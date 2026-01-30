@@ -22,6 +22,34 @@ object PainelAdminGUI {
     private val SECONDARY = Color(0x01, 0x01, 0x01)
     private val TERTIARY = Color(0xFF, 0xFF, 0xFF)
 
+    // helper: try several locations for the image so the code works on different OSes
+    private fun findImageFile(name: String): File? {
+        try {
+            // 1) project IMG folder (relative)
+            val proj = File("IMG", name)
+            if (proj.exists() && proj.isFile) return proj
+
+            // 2) user home Desktop (English and Portuguese common names)
+            val userHome = System.getProperty("user.home") ?: return null
+            val candidates = listOf(
+                File(userHome, "Desktop/$name"),
+                File(userHome, "Área de trabalho/$name"),
+                File(userHome, "Área de trabalho/App Corinthians/IMG/$name"),
+                File(userHome, "App Corinthians/IMG/$name"),
+                File(userHome, name)
+            )
+            for (c in candidates) if (c.exists() && c.isFile) return c
+
+            // 3) absolute path fallback if environment variable present
+            val envPath = System.getenv("APP_CORINTHIANS_IMG")
+            if (!envPath.isNullOrBlank()) {
+                val e = File(envPath)
+                if (e.exists() && e.isFile) return e
+            }
+        } catch (_: Throwable) {}
+        return null
+    }
+
     fun launchGui() {
         // carrega imagens e aplica cores antes de inicializar LAF
         appIcon = loadAppIcon()
@@ -37,10 +65,10 @@ object PainelAdminGUI {
     // tenta encontrar uma imagem raster em IMG para usar como ícone (pega PNG/JPG/GIF)
     private fun loadAppIcon(): Icon? {
         try {
-            // checar arquivo absoluto preferencialmente (PNG fornecido pelo usuário)
-            val absPreferred = File("/home/master/Área de trabalho/App Corinthians/IMG/Corinthians-Simbolo-Png.png")
-            if (absPreferred.exists() && absPreferred.isFile) {
-                val img = ImageIO.read(absPreferred) ?: return null
+            // try relative and common locations via helper
+            val preferred = findImageFile("Corinthians-Simbolo-Png.png")
+            if (preferred != null) {
+                val img = ImageIO.read(preferred) ?: return null
                 val processed = tryRemoveBackground(img)
                 val scaled = processed.getScaledInstance(48, 48, Image.SCALE_SMOOTH)
                 return ImageIcon(scaled)
@@ -63,10 +91,9 @@ object PainelAdminGUI {
     // tenta carregar qualquer imagem raster para o header (mais larga)
     private fun loadHeaderImage(): Image? {
         try {
-            // checar arquivo absoluto preferencialmente (PNG fornecido pelo usuário)
-            val absPreferred = File("/home/master/Área de trabalho/App Corinthians/IMG/Corinthians-Simbolo-Png.png")
-            if (absPreferred.exists() && absPreferred.isFile) {
-                val img = ImageIO.read(absPreferred) ?: return null
+            val preferred = findImageFile("Corinthians-Simbolo-Png.png")
+            if (preferred != null) {
+                val img = ImageIO.read(preferred) ?: return null
                 val processed = tryRemoveBackground(img)
                 return processed
             }
@@ -174,6 +201,26 @@ object PainelAdminGUI {
         f.foreground = SECONDARY
         f.font = Font("SansSerif", Font.PLAIN, 14)
         return f
+    }
+
+    // Utility: walk component tree and ensure readable contrast
+    private fun fixContrastRec(c: Component?) {
+        if (c == null) return
+        try {
+            if (c is JComponent) {
+                val bg = c.background
+                val fg = c.foreground
+                if (bg == TERTIARY && fg == TERTIARY) {
+                    c.foreground = SECONDARY
+                }
+                // special-case text areas that may have dark background but white text already handled elsewhere
+            }
+            if (c is Container) {
+                for (i in 0 until c.componentCount) {
+                    fixContrastRec(c.getComponent(i))
+                }
+            }
+        } catch (_: Throwable) {}
     }
 
     // helper: interpola entre duas cores (t 0.0..1.0)
@@ -502,6 +549,7 @@ object PainelAdminGUI {
 
         // right action buttons
         val btnView = styledButton("Ver jogadores")
+        val btnViewAll = styledButton("Ver todos os jogadores")
         val btnAdd = styledButton("Adicionar time")
         val btnClose = styledButton("Voltar")
 
@@ -531,6 +579,11 @@ object PainelAdminGUI {
             val sel = list.selectedValue
             if (sel == null) JOptionPane.showMessageDialog(d, "Selecione um time.") else showTimeDetailDialogForCategory(sel.teamName, sel.categoria, d)
         }
+        // new: view all players of the team regardless of currently listed category
+        btnViewAll.addActionListener {
+            val sel = list.selectedValue
+            if (sel == null) JOptionPane.showMessageDialog(d, "Selecione um time.") else showTimeDetailDialogForCategory(sel.teamName, "", d)
+        }
         btnAdd.addActionListener {
             adicionarTimeDialog(d)
             // reload data
@@ -540,7 +593,7 @@ object PainelAdminGUI {
 
         val right = JPanel(); right.layout = BoxLayout(right, BoxLayout.Y_AXIS); right.background = SECONDARY
         right.border = BorderFactory.createEmptyBorder(12,12,12,12)
-        right.add(btnView); right.add(Box.createRigidArea(Dimension(0,10))); right.add(btnAdd); right.add(Box.createRigidArea(Dimension(0,10))); right.add(btnClose)
+        right.add(btnView); right.add(Box.createRigidArea(Dimension(0,8))); right.add(btnViewAll); right.add(Box.createRigidArea(Dimension(0,10))); right.add(btnAdd); right.add(Box.createRigidArea(Dimension(0,10))); right.add(btnClose)
 
         d.add(headerPanel, BorderLayout.NORTH)
         d.add(scroll, BorderLayout.CENTER)
@@ -642,14 +695,29 @@ object PainelAdminGUI {
             categoriaCombo.maximumSize = Dimension(Integer.MAX_VALUE, 28)
             categoriaCombo.selectedItem = sel.categoria
             panel.add(categoriaCombo, gbc)
+            // telefone edit field
+            gbc.gridy = 4
+            gbc.gridx = 0
+            panel.add(styledLabel("Telefone:"), gbc)
+            gbc.gridx = 1
+            val telEdit = styledField()
+            telEdit.text = sel.telefone
+            panel.add(telEdit, gbc)
             val save = styledButton("Salvar"); val cancel = styledButton("Cancelar")
             save.addActionListener {
                 val newName = nField.text.trim(); val newId = iField.text.trim().toIntOrNull(); val newPos = pField.text.trim(); val newCat = (categoriaCombo.selectedItem as? String) ?: ""
+                val newTel = telEdit.text.trim()
                 if (newName.isEmpty() || newId == null) { JOptionPane.showMessageDialog(edt, "Preencha nome e idade válidos."); return@addActionListener }
+                // if telefone changed, check uniqueness
+                if (newTel.isNotEmpty() && newTel != sel.telefone) {
+                    val existing = AdicionarTime.getTeamByPhone(newTel)
+                    if (existing != null) { JOptionPane.showMessageDialog(edt, "Este telefone já está registrado no time: $existing"); return@addActionListener }
+                }
                 sel.nome = newName
                 sel.idade = newId
                 sel.posicao = newPos
                 sel.categoria = newCat
+                sel.telefone = newTel
                 AdicionarTime.saveAllChanges()
                 reload()
                 edt.dispose()
@@ -690,6 +758,172 @@ object PainelAdminGUI {
         d.isVisible = true
     }
 
+    // Dialog to create a competition (re-added to fix unresolved reference)
+    private fun criarCompeticaoDialog() {
+        val d = JDialog()
+        d.title = "Criar Competição"
+        d.isModal = true
+        d.layout = BorderLayout()
+        d.setSize(Dimension(760, 480))
+        d.isResizable = true
+
+        val main = JPanel(GridBagLayout())
+        main.background = TERTIARY
+        val gbcMain = GridBagConstraints(); gbcMain.insets = Insets(8,8,8,8); gbcMain.fill = GridBagConstraints.BOTH
+
+        // form left
+        val form = JPanel(GridBagLayout())
+        form.background = TERTIARY
+        val fgbc = GridBagConstraints(); fgbc.insets = Insets(6,6,6,6); fgbc.fill = GridBagConstraints.HORIZONTAL; fgbc.gridx=0; fgbc.gridy=0
+        form.add(styledLabel("Nome:"), fgbc)
+        fgbc.gridx=1; val nomeField = styledField(); form.add(nomeField, fgbc)
+        fgbc.gridx=0; fgbc.gridy=1; form.add(styledLabel("Max perdas:"), fgbc)
+        fgbc.gridx=1; val maxField = styledField(); maxField.text = "1"; form.add(maxField, fgbc)
+        fgbc.gridx=0; fgbc.gridy=2; form.add(styledLabel("Categoria:"), fgbc)
+        fgbc.gridx=1
+        val categorias = try { DB.XmlDatabase.loadGlobalCategorias().ifEmpty { Jogador.allCategorias() } } catch (_: Throwable) { Jogador.allCategorias() }
+        val catBox = JComboBox(categorias.toTypedArray())
+        catBox.background = TERTIARY
+        form.add(catBox, fgbc)
+
+        // selected participants list (left)
+        val selectedModel = DefaultListModel<String>()
+        val selectedList = JList(selectedModel)
+        selectedList.background = TERTIARY
+        val selScroll = JScrollPane(selectedList)
+        selScroll.preferredSize = Dimension(360, 240)
+        selScroll.border = BorderFactory.createTitledBorder("Participantes selecionados")
+
+        val leftWrap = JPanel(BorderLayout())
+        leftWrap.background = TERTIARY
+        leftWrap.add(form, BorderLayout.NORTH)
+        leftWrap.add(selScroll, BorderLayout.CENTER)
+
+        // right side: search + available
+        val rightWrap = JPanel(GridBagLayout())
+        rightWrap.background = TERTIARY
+        val rgbc = GridBagConstraints(); rgbc.insets = Insets(6,6,6,6); rgbc.fill = GridBagConstraints.BOTH; rgbc.gridx=0; rgbc.gridy=0
+        val searchField = styledField(); searchField.maximumSize = Dimension(Integer.MAX_VALUE, 30)
+        val searchPanel = JPanel(); searchPanel.background = TERTIARY; searchPanel.layout = BoxLayout(searchPanel, BoxLayout.X_AXIS)
+        val searchLabel = JLabel("Buscar time:")
+        searchLabel.foreground = SECONDARY
+        searchPanel.add(searchLabel); searchPanel.add(Box.createRigidArea(Dimension(6,0))); searchPanel.add(searchField)
+        rightWrap.add(searchPanel, rgbc)
+
+        rgbc.gridy = 1; rgbc.weightx = 1.0; rgbc.weighty = 1.0
+        val availableModel = DefaultListModel<String>()
+        val availableList = JList(availableModel)
+        availableList.background = TERTIARY
+        val availScroll = JScrollPane(availableList)
+        availScroll.preferredSize = Dimension(360, 320)
+        availScroll.border = BorderFactory.createTitledBorder("Times disponíveis")
+        rightWrap.add(availScroll, rgbc)
+
+        // middle buttons
+        val btnPanel = JPanel(); btnPanel.background = TERTIARY; btnPanel.layout = BoxLayout(btnPanel, BoxLayout.Y_AXIS)
+        val addBtn = styledButton("Adicionar →", PRIMARY); val removeBtn = styledButton("← Remover", PRIMARY)
+        addBtn.maximumSize = Dimension(140,44); removeBtn.maximumSize = Dimension(140,44)
+        btnPanel.add(Box.createVerticalGlue()); btnPanel.add(addBtn); btnPanel.add(Box.createRigidArea(Dimension(0,12))); btnPanel.add(removeBtn); btnPanel.add(Box.createVerticalGlue())
+
+        gbcMain.gridx = 0; gbcMain.gridy = 0; gbcMain.weightx = 0.6; gbcMain.weighty = 1.0
+        main.add(leftWrap, gbcMain)
+        gbcMain.gridx = 1; gbcMain.weightx = 0.0; gbcMain.fill = GridBagConstraints.VERTICAL
+        main.add(btnPanel, gbcMain)
+        gbcMain.gridx = 2; gbcMain.weightx = 0.4; gbcMain.fill = GridBagConstraints.BOTH
+        main.add(rightWrap, gbcMain)
+
+        // populate available based on category and search
+        fun atualizarDisponiveis() {
+            availableModel.clear()
+            val selCat = (catBox.selectedItem as? String) ?: ""
+            val q = searchField.text.trim().lowercase()
+            val times = AdicionarTime.getTimes()
+            for (t in times) {
+                if (selCat.isBlank()) continue
+                if (!t.getJogadores().any { it.categoria == selCat }) continue
+                if (q.isNotEmpty() && !t.nome.lowercase().contains(q)) continue
+                if ((0 until selectedModel.size()).any { selectedModel.get(it) == t.nome }) continue
+                availableModel.addElement(t.nome)
+            }
+        }
+
+        catBox.addActionListener { atualizarDisponiveis() }
+        searchField.document.addDocumentListener(object : javax.swing.event.DocumentListener {
+            override fun insertUpdate(e: javax.swing.event.DocumentEvent) = atualizarDisponiveis()
+            override fun removeUpdate(e: javax.swing.event.DocumentEvent) = atualizarDisponiveis()
+            override fun changedUpdate(e: javax.swing.event.DocumentEvent) = atualizarDisponiveis()
+        })
+
+        addBtn.addActionListener {
+            val sel = availableList.selectedValuesList
+            for (s in sel) {
+                val name = s as String
+                if (!selectedModel.contains(name)) selectedModel.addElement(name)
+                availableModel.removeElement(name)
+            }
+        }
+        removeBtn.addActionListener {
+            val sel = selectedList.selectedValuesList
+            for (s in sel) {
+                val name = s as String
+                selectedModel.removeElement(name)
+                // re-add to available if matches
+                val selCat = (catBox.selectedItem as? String) ?: ""
+                val q = searchField.text.trim().lowercase()
+                val t = AdicionarTime.getTimes().firstOrNull { it.nome == name }
+                if (t != null && selCat.isNotBlank() && t.getJogadores().any { it.categoria == selCat } && (q.isEmpty() || name.lowercase().contains(q))) {
+                    if (!availableModel.contains(name)) availableModel.addElement(name)
+                }
+            }
+        }
+
+        availableList.addMouseListener(object : java.awt.event.MouseAdapter() {
+            override fun mouseClicked(e: java.awt.event.MouseEvent) {
+                if (e.clickCount == 2) {
+                    val sel = availableList.selectedValue
+                    if (sel != null) { val n = sel as String; if (!selectedModel.contains(n)) selectedModel.addElement(n); availableModel.removeElement(n) }
+                }
+            }
+        })
+        selectedList.addMouseListener(object : java.awt.event.MouseAdapter() {
+            override fun mouseClicked(e: java.awt.event.MouseEvent) {
+                if (e.clickCount == 2) {
+                    val sel = selectedList.selectedValue
+                    if (sel != null) { val n = sel as String; selectedModel.removeElement(n); atualizarDisponiveis() }
+                }
+            }
+        })
+
+        atualizarDisponiveis()
+
+        val save = styledButton("Criar"); val cancel = styledButton("Cancelar")
+        save.addActionListener {
+            val nome = nomeField.text.trim(); val maxP = maxField.text.trim().toIntOrNull()
+            val cat = (catBox.selectedItem as? String) ?: ""
+            if (nome.isEmpty() || maxP == null || cat.isEmpty()) { JOptionPane.showMessageDialog(d, "Preencha nome, max perdas e selecione categoria."); return@addActionListener }
+            val c = Competicao(nome, maxP)
+            c.addCategoria(cat)
+            for (i in 0 until selectedModel.size()) {
+                val tname = selectedModel.get(i)
+                c.addParticipacao(tname, cat)
+            }
+            val ok = AdicionarTime.addCompeticaoObj(c)
+            if (ok) {
+                JOptionPane.showMessageDialog(d, "Competição criada: ${'$'}{c.nome}")
+                d.dispose()
+            } else {
+                JOptionPane.showMessageDialog(d, "Erro: nome da competição inválido ou já existe outra competição com esse nome.")
+            }
+        }
+        cancel.addActionListener { d.dispose() }
+
+        val foot = JPanel(); foot.background = TERTIARY; foot.add(save); foot.add(cancel)
+        d.add(main, BorderLayout.CENTER)
+        d.add(foot, BorderLayout.SOUTH)
+        d.setLocationRelativeTo(null)
+        d.isVisible = true
+    }
+
     private fun adicionarTimeDialog(parent: Window?) {
         val d = JDialog()
         d.title = "Adicionar Time"
@@ -708,8 +942,36 @@ object PainelAdminGUI {
         gbc.gridx=0; gbc.gridy=2; panel.add(styledLabel("Avaliação (0-10):"), gbc)
         gbc.gridx=1; val avField = styledField(); panel.add(avField, gbc)
 
+        // footer with actions (create UI elements here so listeners below can attach)
+        val foot = JPanel(FlowLayout(FlowLayout.RIGHT))
+        foot.background = TERTIARY
         val save = styledButton("Salvar")
-        val cancel = styledButton("Cancelar")
+        val cancel = styledButton("Cancelar", TERTIARY, SECONDARY)
+        save.preferredSize = Dimension(120, 36)
+        cancel.preferredSize = Dimension(120, 36)
+        foot.add(cancel); foot.add(save)
+
+        // wrap the form so it can be scrolled when the dialog is small or content grows
+        val formWrap = JPanel(BorderLayout())
+        formWrap.isOpaque = false
+        formWrap.add(panel, BorderLayout.NORTH)
+        // vertical scrollbar shown as needed
+        val formScroll = JScrollPane(formWrap, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER)
+        formScroll.border = BorderFactory.createEmptyBorder()
+        try { formScroll.verticalScrollBar.unitIncrement = 16 } catch (_: Throwable) {}
+
+        // assemble into container and dialog
+        panel.add(formScroll, BorderLayout.CENTER)
+        panel.add(foot, BorderLayout.SOUTH)
+        d.add(panel, BorderLayout.CENTER)
+        // ensure dialog background matches inputs so black text is visible
+        try { d.contentPane.background = TERTIARY } catch (_: Throwable) {}
+        // keyboard: Enter triggers save
+        d.rootPane.defaultButton = save
+        d.setLocationRelativeTo(parent)
+        d.isVisible = true
+
+        // save/cancel listeners for time
         save.addActionListener {
             val nome = nomeField.text.trim(); val tecnico = tecnicoField.text.trim(); val av = avField.text.trim().replace(',', '.').toDoubleOrNull()
             if (nome.isEmpty() || tecnico.isEmpty() || av == null || av < 0.0 || av > 10.0) {
@@ -717,20 +979,15 @@ object PainelAdminGUI {
                 return@addActionListener
             }
             val t = Time(nome, tecnico, av)
-            AdicionarTime.addTimeObj(t)
-            JOptionPane.showMessageDialog(d, "Time adicionado: ${t.nome}")
-            d.dispose()
+            val ok = AdicionarTime.addTimeObj(t)
+            if (ok) {
+                JOptionPane.showMessageDialog(d, "Time adicionado: ${t.nome}")
+                d.dispose()
+            } else {
+                JOptionPane.showMessageDialog(d, "Erro: nome inválido ou já existe outro time com esse nome.")
+            }
         }
         cancel.addActionListener { d.dispose() }
-
-        val foot = JPanel(); foot.background = TERTIARY; foot.add(save); foot.add(cancel)
-
-        d.add(panel, BorderLayout.CENTER)
-        d.add(foot, BorderLayout.SOUTH)
-        // ensure dialog background matches inputs so black text is visible
-        try { d.contentPane.background = TERTIARY } catch (_: Throwable) {}
-        d.setLocationRelativeTo(null)
-        d.isVisible = true
     }
 
     private fun adicionarJogadorDialog(time: Time, parent: Window?) {
@@ -738,362 +995,143 @@ object PainelAdminGUI {
         d.title = "Adicionar Jogador - ${time.nome}"
         d.isModal = true
         d.layout = BorderLayout()
-        d.setSize(Dimension(420, 260))
+        d.setSize(Dimension(540, 360))
         d.isResizable = false
 
-        val panel = JPanel(); panel.layout = GridBagLayout(); panel.background = SECONDARY
-        val gbc = GridBagConstraints(); gbc.insets = Insets(8,8,8,8); gbc.fill = GridBagConstraints.HORIZONTAL; gbc.gridx=0; gbc.gridy=0
+        // Outer container with padding and subtle border
+        val container = JPanel(BorderLayout())
+        container.border = BorderFactory.createEmptyBorder(12,12,12,12)
+        container.background = TERTIARY
 
-        panel.add(styledLabel("Nome:"), gbc)
-        gbc.gridx=1; val nomeField = styledField(); panel.add(nomeField, gbc)
-        gbc.gridx=0; gbc.gridy=1; panel.add(styledLabel("Idade:"), gbc)
-        gbc.gridx=1; val idadeField = styledField(); panel.add(idadeField, gbc)
-        gbc.gridx=0; gbc.gridy=2; panel.add(styledLabel("Posição:"), gbc)
-        gbc.gridx=1; val posField = styledField(); panel.add(posField, gbc)
-        gbc.gridx=0; gbc.gridy=3; panel.add(styledLabel("Categoria:"), gbc)
-        gbc.gridx=1
-        // category combo prefilled with default based on age
+        // Header
+        val hdr = JPanel(BorderLayout())
+        hdr.background = TERTIARY
+        val title = OutlinedLabel("Adicionar Jogador - ${time.nome}", Font("SansSerif", Font.BOLD, 20), PRIMARY, 2.5f)
+        title.foreground = SECONDARY
+        title.border = BorderFactory.createEmptyBorder(6,6,12,6)
+        hdr.add(title, BorderLayout.CENTER)
+        container.add(hdr, BorderLayout.NORTH)
+
+        // Form panel
+        val form = JPanel(GridBagLayout())
+        form.background = TERTIARY
+        val gbc = GridBagConstraints()
+        gbc.insets = Insets(10,10,10,10)
+        gbc.fill = GridBagConstraints.HORIZONTAL
+
+        // helper to create labels with consistent style
+        fun lbl(text: String): JLabel {
+            val l = JLabel(text)
+            l.font = Font("SansSerif", Font.BOLD, 14)
+            l.foreground = SECONDARY
+            return l
+        }
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.25
+        form.add(lbl("Nome:"), gbc)
+        gbc.gridx = 1; gbc.weightx = 0.75
+        val nomeField = JTextField(28)
+        nomeField.font = Font("SansSerif", Font.PLAIN, 14)
+        nomeField.background = TERTIARY
+        nomeField.foreground = SECONDARY
+        nomeField.border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color(200,200,200)), BorderFactory.createEmptyBorder(6,8,6,8))
+        form.add(nomeField, gbc)
+
+        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.25
+        form.add(lbl("Idade:"), gbc)
+        gbc.gridx = 1; gbc.weightx = 0.75
+        val idadeField = JTextField(6)
+        idadeField.font = Font("SansSerif", Font.PLAIN, 14)
+        idadeField.background = TERTIARY
+        idadeField.foreground = SECONDARY
+        idadeField.border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color(200,200,200)), BorderFactory.createEmptyBorder(6,8,6,8))
+        form.add(idadeField, gbc)
+
+        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.25
+        form.add(lbl("Posição:"), gbc)
+        gbc.gridx = 1; gbc.weightx = 0.75
+        val posField = JTextField(20)
+        posField.font = Font("SansSerif", Font.PLAIN, 14)
+        posField.background = TERTIARY
+        posField.foreground = SECONDARY
+        posField.border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color(200,200,200)), BorderFactory.createEmptyBorder(6,8,6,8))
+        form.add(posField, gbc)
+
+        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0.25
+        form.add(lbl("Categoria:"), gbc)
+        gbc.gridx = 1; gbc.weightx = 0.75
         val categoriaCombo = JComboBox(Jogador.allCategorias().toTypedArray())
         categoriaCombo.background = TERTIARY
-        categoriaCombo.maximumSize = Dimension(Integer.MAX_VALUE, 28)
-        panel.add(categoriaCombo, gbc)
+        categoriaCombo.foreground = SECONDARY
+        categoriaCombo.border = BorderFactory.createLineBorder(Color(200,200,200))
+        form.add(categoriaCombo, gbc)
 
+        gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0.25
+        form.add(lbl("Telefone:"), gbc)
+        gbc.gridx = 1; gbc.weightx = 0.75
+        val telField = JTextField(18)
+        telField.font = Font("SansSerif", Font.PLAIN, 14)
+        telField.background = TERTIARY
+        telField.foreground = SECONDARY
+        telField.border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color(200,200,200)), BorderFactory.createEmptyBorder(6,8,6,8))
+        telField.toolTipText = "Digite apenas números ou +55..."
+        form.add(telField, gbc)
+
+        // hint area
+        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2; gbc.weightx = 1.0
+        val hint = JLabel("Telefone deve ser único. Campos obrigatórios: Nome, Idade.")
+        hint.font = Font("SansSerif", Font.ITALIC, 12)
+        hint.foreground = Color(100,100,100)
+        form.add(hint, gbc)
+
+        // wrap the form so it can be scrolled when the dialog is small or content grows
+        val formWrap = JPanel(BorderLayout())
+        formWrap.isOpaque = false
+        formWrap.add(form, BorderLayout.NORTH)
+        // vertical scrollbar shown as needed
+        val formScroll = JScrollPane(formWrap, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER)
+        formScroll.border = BorderFactory.createEmptyBorder()
+        try { formScroll.verticalScrollBar.unitIncrement = 16 } catch (_: Throwable) {}
+
+        // footer with actions for this dialog (Salvar/Cadastrar jogador)
+        val foot = JPanel(FlowLayout(FlowLayout.RIGHT))
+        foot.background = TERTIARY
         val save = styledButton("Salvar")
-        val cancel = styledButton("Cancelar")
+        val cancel = styledButton("Cancelar", TERTIARY, SECONDARY)
+        save.preferredSize = Dimension(120, 36)
+        cancel.preferredSize = Dimension(120, 36)
+        foot.add(cancel); foot.add(save)
+
+        // assemble into container and dialog
+        container.add(formScroll, BorderLayout.CENTER)
+        container.add(foot, BorderLayout.SOUTH)
+        d.add(container, BorderLayout.CENTER)
+        // ensure dialog background matches inputs so black text is visible
+        try { d.contentPane.background = TERTIARY } catch (_: Throwable) {}
+        // keyboard: Enter triggers save
+        d.rootPane.defaultButton = save
+        d.setLocationRelativeTo(parent)
+        d.isVisible = true
+
+        // save/cancel listeners for jogador
         save.addActionListener {
             val nome = nomeField.text.trim(); val idade = idadeField.text.trim().toIntOrNull(); val pos = posField.text.trim(); val cat = (categoriaCombo.selectedItem as? String) ?: ""
+            val tel = telField.text.trim()
             if (nome.isEmpty() || idade == null || idade < 0) { JOptionPane.showMessageDialog(d, "Preencha nome e idade válidos."); return@addActionListener }
-            val j = Jogador(nome, idade, pos, cat)
-            AdicionarTime.addPlayerToTime(time.nome, j)
-            JOptionPane.showMessageDialog(d, "Jogador adicionado: ${j.nome}")
-            d.dispose()
+            if (tel.isNotEmpty()) {
+                val existing = AdicionarTime.getTeamByPhone(tel)
+                if (existing != null) { JOptionPane.showMessageDialog(d, "Este telefone já está registrado no time: $existing"); return@addActionListener }
+            }
+            val j = Jogador(nome, idade, pos, cat, tel)
+            val ok = AdicionarTime.addPlayerToTime(time.nome, j)
+            if (ok) {
+                JOptionPane.showMessageDialog(d, "Jogador adicionado: ${j.nome}")
+                d.dispose()
+            } else {
+                JOptionPane.showMessageDialog(d, "Não foi possível adicionar jogador: telefone duplicado ou erro.")
+            }
         }
         cancel.addActionListener { d.dispose() }
-
-        val foot = JPanel(); foot.background = SECONDARY; foot.add(save); foot.add(cancel)
-
-        d.add(panel, BorderLayout.CENTER)
-        d.add(foot, BorderLayout.SOUTH)
-        d.setLocationRelativeTo(null)
-        d.isVisible = true
-    }
-
-    private fun criarCompeticaoDialog() {
-        val d = JDialog()
-        d.title = "Criar Competição"
-        d.isModal = true
-        d.layout = BorderLayout()
-        d.setSize(Dimension(1000, 600))
-        d.isResizable = true
-
-        // Header (compact)
-        val header = JPanel(BorderLayout())
-        header.background = SECONDARY
-        val title = styledLabel("Criar Competição", 20)
-        title.border = BorderFactory.createEmptyBorder(14,14,6,12)
-        val hint = JLabel("Preencha nome, regras e selecione participantes")
-        hint.foreground = Color(150,150,150)
-        hint.font = Font("SansSerif", Font.PLAIN, 13)
-        hint.border = BorderFactory.createEmptyBorder(0,14,12,12)
-        header.add(title, BorderLayout.NORTH)
-        header.add(hint, BorderLayout.SOUTH)
-
-        // Use JSplitPane for resizable, modern feel
-        val leftPanel = JPanel(GridBagLayout())
-        leftPanel.background = TERTIARY
-        leftPanel.minimumSize = Dimension(380, 300)
-
-        val gc = GridBagConstraints()
-        gc.insets = Insets(10,14,10,14)
-        gc.fill = GridBagConstraints.HORIZONTAL
-        gc.gridx = 0; gc.gridy = 0
-
-        // allow label wrapping with HTML if necessary
-        val nameLabel = JLabel("<html><b>Nome da competição:</b></html>")
-        nameLabel.foreground = SECONDARY
-        nameLabel.font = Font("SansSerif", Font.BOLD, 14)
-        leftPanel.add(nameLabel, gc)
-        gc.gridx = 1
-        val nomeField = styledField(); nomeField.toolTipText = "Ex: Copa da Escolinha"; leftPanel.add(nomeField, gc)
-
-        gc.gridx = 0; gc.gridy = 1
-        val maxLabel = JLabel("<html><b>Max de derrotas (elim):</b></html>")
-        maxLabel.foreground = SECONDARY
-        maxLabel.font = Font("SansSerif", Font.BOLD, 14)
-        leftPanel.add(maxLabel, gc)
-        gc.gridx = 1
-        val maxField = styledField(); maxField.toolTipText = "Quantidade de derrotas para eliminação (0 para nenhuma)"; leftPanel.add(maxField, gc)
-
-        // Categories box
-        gc.gridx = 0; gc.gridy = 2; gc.gridwidth = 2
-        // category panel now shows only existing global categories and a selected-list
-        val catBox = JPanel()
-        catBox.background = TERTIARY
-        catBox.layout = BoxLayout(catBox, BoxLayout.Y_AXIS)
-        catBox.border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color(220,220,220)), "Categorias")
-
-        // load global categories (fallback to default list)
-        val catModel = DefaultListModel<String>()
-        try {
-            val cats = DB.XmlDatabase.loadGlobalCategorias()
-            if (cats.isNotEmpty()) cats.forEach { catModel.addElement(it) } else Jogador.allCategorias().forEach { catModel.addElement(it) }
-        } catch (_: Throwable) { Jogador.allCategorias().forEach { catModel.addElement(it) } }
-
-        // checklist: show categories with checkboxes so user can toggle multiple explicitly
-        val checkedCats = mutableSetOf<String>()
-
-        val catList = JList(catModel)
-        catList.visibleRowCount = 8
-        catList.selectionMode = ListSelectionModel.SINGLE_SELECTION
-        catList.background = TERTIARY
-        catList.fixedCellHeight = 28
-
-        // renderer that draws a checkbox for each item, checked when in checkedCats
-        class CheckBoxListRenderer : JCheckBox(), ListCellRenderer<String> {
-            init {
-                this.isOpaque = true
-            }
-            override fun getListCellRendererComponent(list: JList<out String>?, value: String?, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
-                // set displayed text
-                text = value ?: ""
-                // configure colors and padding
-                foreground = SECONDARY
-                background = if (index % 2 == 0) TERTIARY else Color(245,245,245)
-                border = BorderFactory.createEmptyBorder(4,8,4,8)
-                // checkbox state reflects whether this category is checked
-                this.isSelected = value != null && checkedCats.contains(value)
-                return this
-            }
-        }
-
-        catList.cellRenderer = CheckBoxListRenderer()
-        val catScroll = JScrollPane(catList)
-        catScroll.preferredSize = Dimension(360, 160)
-
-        // list that shows currently selected categories (keeps selection visible and scrollable)
-        val selectedModel = DefaultListModel<String>()
-        val selectedList = JList(selectedModel)
-        selectedList.background = TERTIARY
-        selectedList.fixedCellHeight = 26
-        val selectedScroll = JScrollPane(selectedList)
-        selectedScroll.preferredSize = Dimension(360, 80)
-
-        // placeholder refresh function — assigned after participant list is created
-        var refreshParticipants: () -> Unit = { }
-
-         // toggle checkbox on click
-         catList.addMouseListener(object : java.awt.event.MouseAdapter() {
-             override fun mouseClicked(e: java.awt.event.MouseEvent) {
-                 val idx = catList.locationToIndex(e.point)
-                 if (idx < 0) return
-                 val value = catModel.get(idx)
-                 if (checkedCats.contains(value)) checkedCats.remove(value) else checkedCats.add(value)
-                 // update selected list model
-                 selectedModel.clear()
-                 checkedCats.forEach { selectedModel.addElement(it) }
-                 // repaint list to update checkboxes
-                 catList.repaint()
-                 try { refreshParticipants() } catch (_: Throwable) {}
-             }
-         })
-
-        // layout assembly for catBox
-        catBox.add(Box.createRigidArea(Dimension(0,6)))
-        val topWrap = JPanel(BorderLayout()); topWrap.background = TERTIARY; topWrap.add(JLabel("Categorias disponíveis:"), BorderLayout.NORTH); topWrap.add(catScroll, BorderLayout.CENTER)
-        topWrap.alignmentX = Component.LEFT_ALIGNMENT
-        catBox.add(topWrap)
-        catBox.add(Box.createRigidArea(Dimension(0,8)))
-        val selWrap = JPanel(BorderLayout()); selWrap.background = TERTIARY; selWrap.add(JLabel("Categorias selecionadas:"), BorderLayout.NORTH); selWrap.add(selectedScroll, BorderLayout.CENTER)
-        selWrap.alignmentX = Component.LEFT_ALIGNMENT
-        catBox.add(selWrap)
-        catBox.maximumSize = Dimension(Integer.MAX_VALUE, 380)
-        leftPanel.add(catBox, gc)
-
-        // Right side - participants with search and renderer
-        val rightPanel = JPanel(BorderLayout())
-        rightPanel.background = TERTIARY
-        rightPanel.minimumSize = Dimension(380,300)
-        rightPanel.border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color(220,220,220)), "Participantes (selecione)")
-
-        val participantTop = JPanel(); participantTop.background = TERTIARY
-        val pSearch = styledField(); pSearch.toolTipText = "Buscar participantes"
-        pSearch.preferredSize = Dimension(220,28)
-        participantTop.add(pSearch)
-
-        // times list model used by participants list
-        val timesListModel = DefaultListModel<String>()
-        val partList = JList(timesListModel); partList.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
-        partList.cellRenderer = ListCellRenderer { _, value, index, isSelected, _ ->
-            val p = JPanel(BorderLayout())
-            p.border = BorderFactory.createEmptyBorder(6,8,6,8)
-            p.isOpaque = true
-            val name = JLabel(value)
-            name.font = Font("SansSerif", Font.BOLD, 13)
-            name.foreground = if (isSelected) TERTIARY else SECONDARY
-            // try to show category if time exists
-            val t = AdicionarTime.getTimes().find { it.nome == value }
-            val catLabel = JLabel(if (t != null && t.getJogadores().isNotEmpty()) "" else "")
-            if (t != null) {
-                val cats = t.getJogadores().map { it.categoria }.distinct().filter { it.isNotEmpty() }
-                if (cats.isNotEmpty()) catLabel.text = " (${cats.joinToString(",")})" else catLabel.text = ""
-            }
-            catLabel.font = Font("SansSerif", Font.PLAIN, 12)
-            catLabel.foreground = Color(110,110,110)
-            val center = JPanel(); center.layout = BoxLayout(center, BoxLayout.X_AXIS); center.isOpaque = false
-            center.add(name); center.add(catLabel)
-            p.add(center, BorderLayout.CENTER)
-            p.background = if (isSelected) PRIMARY else TERTIARY
-            p
-        }
-        val partScroll = JScrollPane(partList)
-
-        // implement refreshParticipants now that timesListModel exists
-        refreshParticipants = {
-            val selectedCats = checkedCats.toSet()
-            val q = pSearch.text.trim().lowercase()
-            timesListModel.clear()
-            val teams = AdicionarTime.getTimes()
-            teams.filter { team ->
-                // match search
-                val matchesSearch = q.isEmpty() || team.nome.lowercase().contains(q) || team.tecnico.lowercase().contains(q)
-                if (!matchesSearch) return@filter false
-                // if no categories selected -> include
-                if (selectedCats.isEmpty()) return@filter true
-                // else include if any player in team matches any selected category
-                team.getJogadores().any { p -> p.categoria in selectedCats }
-            }.forEach { timesListModel.addElement(it.nome) }
-        }
-
-        // filter participants on search
-        pSearch.document.addDocumentListener(object : javax.swing.event.DocumentListener {
-            override fun insertUpdate(e: javax.swing.event.DocumentEvent) = refreshParticipants()
-            override fun removeUpdate(e: javax.swing.event.DocumentEvent) = refreshParticipants()
-            override fun changedUpdate(e: javax.swing.event.DocumentEvent) = refreshParticipants()
-        })
-
-        val pControls = JPanel(); pControls.background = TERTIARY
-        val selectAll = styledButton("Selecionar tudo"); val clearSel = styledButton("Limpar seleção")
-        selectAll.addActionListener { if (timesListModel.size() > 0) partList.setSelectionInterval(0, timesListModel.size()-1) }
-        clearSel.addActionListener { partList.clearSelection() }
-        pControls.add(selectAll); pControls.add(clearSel)
-
-        rightPanel.add(participantTop, BorderLayout.NORTH)
-        rightPanel.add(partScroll, BorderLayout.CENTER)
-        rightPanel.add(pControls, BorderLayout.SOUTH)
-
-        // ensure initial participants populated
-        refreshParticipants()
-
-        // Use split pane so user can resize columns
-        val split = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
-        split.setResizeWeight(0.5)
-        split.setOneTouchExpandable(true)
-
-        // Footer
-        val save = styledButton("Criar Competição"); save.preferredSize = Dimension(200, 44)
-        val cancel = styledButton("Cancelar"); cancel.preferredSize = Dimension(140, 44)
-        save.addActionListener {
-            val name = nomeField.text.trim(); val maxP = maxField.text.trim().toIntOrNull()
-            if (name.isEmpty() || maxP == null || maxP < 0) { JOptionPane.showMessageDialog(d, "Preencha o nome e max perdas corretamente."); return@addActionListener }
-            val c = Competicao(name, maxP)
-            for (i in 0 until selectedModel.size()) c.addCategoria(selectedModel.get(i))
-            val sel = partList.selectedValuesList
-            for (p in sel) c.addParticipacao(p, "")
-            AdicionarTime.addCompeticaoObj(c)
-            JOptionPane.showMessageDialog(d, "Competição criada: ${c.nome}")
-            d.dispose()
-        }
-        cancel.addActionListener { d.dispose() }
-        val foot = JPanel(); foot.background = TERTIARY; foot.border = BorderFactory.createEmptyBorder(14,14,14,14); foot.add(save); foot.add(Box.createRigidArea(Dimension(12,0))); foot.add(cancel)
-
-        d.add(header, BorderLayout.NORTH)
-        d.add(split, BorderLayout.CENTER)
-        d.add(foot, BorderLayout.SOUTH)
-        d.setLocationRelativeTo(null)
-        d.isVisible = true
-    }
-
-    private fun sorteiosGui() {
-        val comps = AdicionarTime.getCompeticoes().toMutableList()
-        if (comps.isEmpty()) { JOptionPane.showMessageDialog(null, "Nenhuma competição criada."); return }
-        val d = JDialog()
-        d.title = "Sorteios"
-        d.isModal = true
-        d.layout = BorderLayout()
-        d.setSize(Dimension(560, 420))
-        d.isResizable = false
-
-        val listModel = DefaultListModel<String>(); comps.forEach { listModel.addElement("${it.nome} (${it.participacoes.size})") }
-        val list = JList(listModel); list.selectionMode = ListSelectionModel.SINGLE_SELECTION
-        val scroll = JScrollPane(list)
-
-        val openBtn = styledButton("Abrir")
-        val sortBtn = styledButton("Sortear próximos")
-        val closeBtn = styledButton("Fechar")
-
-        openBtn.addActionListener {
-            val idx = list.selectedIndex; if (idx < 0) JOptionPane.showMessageDialog(d, "Selecione uma competição.") else showCompetitionDialog(comps[idx], d)
-        }
-        sortBtn.addActionListener {
-            val idx = list.selectedIndex; if (idx < 0) JOptionPane.showMessageDialog(d, "Selecione uma competição.") else {
-                val chosen = comps[idx]
-                val participants = chosen.participacoes.map { it.timeNome }.toMutableList()
-                if (participants.size < 2) { JOptionPane.showMessageDialog(d, "É necessário pelo menos 2 times para sortear."); return@addActionListener }
-                participants.shuffle(Random(System.currentTimeMillis()))
-                val sb = StringBuilder(); var i = 0
-                while (i + 1 < participants.size) { sb.append("${participants[i]}  x  ${participants[i+1]}\n"); i += 2 }
-                if (i < participants.size) sb.append("${participants[i]} (folga)\n")
-                JOptionPane.showMessageDialog(d, sb.toString(), "Resultado do Sorteio", JOptionPane.INFORMATION_MESSAGE)
-            }
-        }
-        closeBtn.addActionListener { d.dispose() }
-
-        val right = JPanel(); right.layout = BoxLayout(right, BoxLayout.Y_AXIS); right.background = SECONDARY; right.border = BorderFactory.createEmptyBorder(8,8,8,8)
-        right.add(openBtn); right.add(Box.createRigidArea(Dimension(0,8))); right.add(sortBtn); right.add(Box.createRigidArea(Dimension(0,8))); right.add(closeBtn)
-
-        d.add(styledLabel("Competições", 16), BorderLayout.NORTH)
-        d.add(scroll, BorderLayout.CENTER)
-        d.add(right, BorderLayout.EAST)
-
-        d.setLocationRelativeTo(null); d.isVisible = true
-    }
-
-    private fun showCompetitionDialog(c: Competicao, parent: Window?) {
-        val d = JDialog()
-        d.title = "Competição: ${c.nome}"
-        d.isModal = true
-        d.layout = BorderLayout()
-        d.setSize(Dimension(520, 420))
-        d.isResizable = false
-        val info = JTextArea(); info.isEditable = false; info.background = SECONDARY; info.foreground = TERTIARY; info.font = Font("SansSerif", Font.PLAIN, 14)
-        val sb = StringBuilder(); sb.append("Nome: ${c.nome}\nMax perdas: ${c.maxPerdas}\nCategorias: ${c.categorias}\n\nParticipantes:\n")
-        if (c.participacoes.isEmpty()) sb.append("(nenhum)\n") else c.participacoes.forEachIndexed { i, p -> sb.append("${i+1}) ${p.timeNome} ${if (p.categoria.isNotEmpty()) "(cat: ${p.categoria})" else ""}\n") }
-        info.text = sb.toString()
-        d.add(styledLabel("Competição"), BorderLayout.NORTH)
-        d.add(JScrollPane(info), BorderLayout.CENTER)
-        val close = styledButton("Fechar"); close.addActionListener { d.dispose() }
-        val foot = JPanel(); foot.background = SECONDARY; foot.add(close)
-        d.add(foot, BorderLayout.SOUTH)
-        d.setLocationRelativeTo(null); d.isVisible = true
-    }
-
-    private fun doSorteio(c: Competicao) {
-        val participants = c.participacoes.map { it.timeNome }.toMutableList()
-        if (participants.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Sem participantes para sortear.")
-            return
-        }
-        participants.shuffle(Random(System.currentTimeMillis()))
-        val sb = StringBuilder()
-        sb.append("Resultados do sorteio:\n")
-        var i = 0
-        while (i < participants.size) {
-            val a = participants[i]
-            val b = if (i + 1 < participants.size) participants[i + 1] else null
-            if (b != null) sb.append("${a}  x  ${b}\n") else sb.append("${a}  (folga)\n")
-            i += 2
-        }
-        JOptionPane.showMessageDialog(null, sb.toString())
     }
 
     private fun manageCategoriesDialog() {
@@ -1153,4 +1191,271 @@ object PainelAdminGUI {
         d.setLocationRelativeTo(null)
         d.isVisible = true
     }
+
+    // Simple Sorteios dialog: list competitions and allow open/delete
+    private fun sorteiosGui() {
+        val comps = AdicionarTime.getCompeticoes().toMutableList()
+        val d = JDialog()
+        d.title = "Sorteios"
+        d.isModal = true
+        d.layout = BorderLayout()
+        d.setSize(Dimension(640, 420))
+        d.isResizable = true
+
+        val model = DefaultListModel<Competicao>()
+        comps.forEach { model.addElement(it) }
+        val list = JList(model)
+        list.selectionMode = ListSelectionModel.SINGLE_SELECTION
+        list.cellRenderer = ListCellRenderer { _, value, index, isSelected, _ ->
+            val p = JPanel(BorderLayout())
+            p.border = BorderFactory.createEmptyBorder(8, 8, 8, 8)
+            val title = JLabel("${value.nome}  •  Max perdas: ${value.maxPerdas}")
+            title.font = Font("SansSerif", Font.BOLD, 14)
+            title.foreground = if (isSelected) TERTIARY else SECONDARY
+            val meta = JLabel("Categorias: ${value.categorias.joinToString(", ")}")
+            meta.font = Font("SansSerif", Font.PLAIN, 12)
+            meta.foreground = Color(110,110,110)
+            val left = JPanel(); left.layout = BoxLayout(left, BoxLayout.Y_AXIS); left.isOpaque = false
+            left.add(title); left.add(Box.createRigidArea(Dimension(0,6))); left.add(meta)
+            p.add(left, BorderLayout.CENTER)
+            p.background = if (isSelected) PRIMARY else if (index % 2 == 0) Color(245,245,245) else TERTIARY
+            p
+        }
+        val scroll = JScrollPane(list)
+        scroll.border = BorderFactory.createLineBorder(Color(200,200,200))
+
+        val openBtn = styledButton("Abrir")
+        val trackBtn = styledButton("Acompanhar")
+        val delBtn = styledButton("Excluir")
+        val closeBtn = styledButton("Fechar")
+
+        openBtn.addActionListener {
+            val sel = list.selectedValue
+            if (sel == null) {
+                JOptionPane.showMessageDialog(d, "Selecione uma competição.")
+            } else {
+                d.dispose()
+                openCompetitionDialog(sel, null)
+            }
+        }
+        trackBtn.addActionListener {
+            val sel = list.selectedValue
+            if (sel == null) { JOptionPane.showMessageDialog(d, "Selecione uma competição."); return@addActionListener }
+            d.dispose()
+            openCompetitionTracker(sel, null)
+        }
+        delBtn.addActionListener {
+            val sel = list.selectedValue
+            if (sel == null) { JOptionPane.showMessageDialog(d, "Selecione uma competição."); return@addActionListener }
+            val ok = JOptionPane.showConfirmDialog(d, "Excluir ${sel.nome}?", "Confirmar", JOptionPane.YES_NO_OPTION)
+            if (ok == JOptionPane.YES_OPTION) {
+                AdicionarTime.removeCompeticaoByName(sel.nome)
+                model.removeElement(sel)
+                JOptionPane.showMessageDialog(d, "Competição excluída.")
+            }
+        }
+        closeBtn.addActionListener { d.dispose() }
+
+        val btns = JPanel(FlowLayout(FlowLayout.RIGHT))
+        btns.background = SECONDARY
+        btns.add(openBtn); btns.add(trackBtn); btns.add(delBtn); btns.add(closeBtn)
+
+        d.add(scroll, BorderLayout.CENTER)
+        d.add(btns, BorderLayout.SOUTH)
+        d.setLocationRelativeTo(null)
+        d.isVisible = true
+    }
+
+    // Opens a detailed dialog for a competition (simple viewer for now)
+    private fun openCompetitionDialog(c: Competicao, parent: Window?) {
+        val d = JDialog()
+        d.title = "Competição: ${c.nome}"
+        d.isModal = true
+        d.layout = BorderLayout()
+        d.setSize(Dimension(680, 460))
+        d.isResizable = true
+
+        val header = JPanel(BorderLayout())
+        header.background = TERTIARY
+        val title = styledLabel(c.nome, 18)
+        title.border = BorderFactory.createEmptyBorder(12,12,8,12)
+        header.add(title, BorderLayout.NORTH)
+        val meta = JLabel("Max perdas: ${c.maxPerdas}   •   Categorias: ${if (c.categorias.isEmpty()) "(nenhuma)" else c.categorias.joinToString(", ")}")
+        meta.font = Font("SansSerif", Font.PLAIN, 13)
+        meta.foreground = Color(100,100,100)
+        meta.border = BorderFactory.createEmptyBorder(0,12,12,12)
+        header.add(meta, BorderLayout.SOUTH)
+
+        val model = DefaultListModel<String>()
+        for (p in c.participacoes) model.addElement("${p.timeNome} ${if (p.categoria.isNotBlank()) "(cat: ${p.categoria})" else ""}")
+        val list = JList(model)
+        list.selectionMode = ListSelectionModel.SINGLE_SELECTION
+        list.background = TERTIARY
+        list.cellRenderer = ListCellRenderer { _, value, index, isSelected, _ ->
+            val p = JPanel(BorderLayout())
+            p.border = BorderFactory.createEmptyBorder(6,8,6,8)
+            val lbl = JLabel(value)
+            lbl.font = Font("SansSerif", Font.PLAIN, 13)
+            lbl.foreground = SECONDARY
+            p.add(lbl, BorderLayout.CENTER)
+            p.background = if (isSelected) PRIMARY else if (index % 2 == 0) Color(245,245,245) else TERTIARY
+            p
+        }
+        val scroll = JScrollPane(list)
+        scroll.border = BorderFactory.createLineBorder(Color(200,200,200))
+
+        val close = styledButton("Fechar")
+        close.addActionListener { d.dispose() }
+        val acompanharBtn = styledButton("Acompanhar")
+        acompanharBtn.addActionListener { d.dispose(); openCompetitionTracker(c, parent) }
+        val foot = JPanel(); foot.background = SECONDARY; foot.add(acompanharBtn); foot.add(close)
+
+        d.add(header, BorderLayout.NORTH)
+        d.add(scroll, BorderLayout.CENTER)
+        d.add(foot, BorderLayout.SOUTH)
+        d.setLocationRelativeTo(parent)
+        d.isVisible = true
+    }
+
+    // Tracker dialog: generate rounds, show pending matches, mark winners
+    private fun openCompetitionTracker(c: Competicao, parent: Window?) {
+        val d = JDialog()
+        d.title = "Acompanhar: ${c.nome}"
+        d.isModal = true
+        d.layout = BorderLayout()
+        d.setSize(Dimension(820, 520))
+        d.isResizable = true
+
+        val header = JPanel(BorderLayout())
+        header.background = TERTIARY
+        header.add(styledLabel("Acompanhar: ${c.nome}", 18), BorderLayout.NORTH)
+        val meta = JLabel("Max perdas: ${c.maxPerdas}   •   Categorias: ${c.categorias.joinToString(", ")}")
+        meta.font = Font("SansSerif", Font.PLAIN, 13)
+        meta.foreground = Color(90,90,90)
+        meta.border = BorderFactory.createEmptyBorder(0,12,12,12)
+        header.add(meta, BorderLayout.SOUTH)
+
+        // left: pending matches
+        val pendingModel = DefaultListModel<String>()
+        fun refreshPending() {
+            pendingModel.clear()
+            for (m in c.pendingMatches()) pendingModel.addElement("")
+        }
+        val pendingList = JList(pendingModel)
+        pendingList.cellRenderer = ListCellRenderer { _, value, index, isSelected, _ ->
+            val p = JPanel(BorderLayout())
+            p.border = BorderFactory.createEmptyBorder(8,8,8,8)
+            val lbl = JLabel(value)
+            lbl.font = Font("SansSerif", Font.PLAIN, 13)
+            lbl.foreground = SECONDARY
+            p.add(lbl, BorderLayout.CENTER)
+            p.background = if (isSelected) PRIMARY else if (index % 2 == 0) Color(250,250,250) else TERTIARY
+            p
+        }
+        val pendingScroll = JScrollPane(pendingList)
+        pendingScroll.border = BorderFactory.createTitledBorder("Partidas pendentes")
+
+        // functions to map matches to display strings
+        fun matchToString(m: com.corinthians.app.Competicao.Match): String {
+            return "${m.a}  vs  ${m.b}  ${if (m.winner != null) "• vencedor: ${m.winner}" else "• pendente"}"
+        }
+
+        fun reloadPendingNoState() {
+            pendingModel.clear()
+            for (m in c.pendingMatches()) pendingModel.addElement(matchToString(m))
+        }
+        // remove earlier reloadPending() call here; will call after drawBtn declared
+
+        // center: action buttons
+        val center = JPanel(); center.layout = BoxLayout(center, BoxLayout.Y_AXIS); center.background = TERTIARY
+        val drawBtn = styledButton("Sortear próximos")
+        val markWinnerBtn = styledButton("Marcar vencedor")
+        val resetBtn = styledButton("Resetar histórico")
+        // initial state: only allow drawing when there are no pending matches
+        drawBtn.isEnabled = c.pendingMatches().isEmpty()
+        center.add(Box.createVerticalGlue()); center.add(drawBtn); center.add(Box.createRigidArea(Dimension(0,10))); center.add(markWinnerBtn); center.add(Box.createRigidArea(Dimension(0,10))); center.add(resetBtn); center.add(Box.createVerticalGlue())
+
+        // now safe to call reloadPending() and set drawBtn state
+        fun reloadPending() {
+            reloadPendingNoState()
+            drawBtn.isEnabled = c.pendingMatches().isEmpty()
+        }
+        reloadPending()
+
+        // right: history / standings
+        val historyModel = DefaultListModel<String>()
+        val historyList = JList(historyModel)
+        historyList.cellRenderer = ListCellRenderer { _, value, index, isSelected, _ ->
+            val p = JPanel(BorderLayout())
+            p.border = BorderFactory.createEmptyBorder(6,8,6,8)
+            val lbl = JLabel(value)
+            lbl.font = Font("SansSerif", Font.PLAIN, 13)
+            lbl.foreground = SECONDARY
+            p.add(lbl, BorderLayout.CENTER)
+            p.background = if (isSelected) PRIMARY else if (index % 2 == 0) Color(245,245,245) else TERTIARY
+            p
+        }
+        val historyScroll = JScrollPane(historyList)
+        historyScroll.border = BorderFactory.createTitledBorder("Histórico de partidas")
+
+        fun reloadHistoryAndStandings() {
+            historyModel.clear()
+            // show full history: completed first (winner != null), then pending
+            val hist = c.getHistory()
+            // completed matches
+            for (m in hist.filter { it.winner != null }) historyModel.addElement(matchToString(m))
+            // pending matches (to make them visible as historical pendings)
+            for (m in hist.filter { it.winner == null }) historyModel.addElement(matchToString(m))
+        }
+        reloadHistoryAndStandings()
+
+        // actions
+        drawBtn.addActionListener {
+            val next = c.generateNextRound()
+            if (next.isEmpty()) JOptionPane.showMessageDialog(d, "Nenhuma partida disponível para sortear (talvez número ímpar por perdas, ou ninguém ativo).")
+            reloadPending()
+            reloadHistoryAndStandings()
+            // after drawing there will be pending matches -> disable drawing until they are resolved
+            drawBtn.isEnabled = c.pendingMatches().isEmpty()
+            AdicionarTime.updateCompeticao(c)
+        }
+
+        markWinnerBtn.addActionListener {
+            val selIdx = pendingList.selectedIndex
+            if (selIdx < 0) { JOptionPane.showMessageDialog(d, "Selecione uma partida pendente para marcar vencedor."); return@addActionListener }
+            val match = c.pendingMatches()[selIdx]
+            // prefer a two-button dialog to avoid typing errors
+            val options = arrayOf(match.a, match.b)
+            val chosen = JOptionPane.showOptionDialog(d, "Marcar vencedor:", "Marcar vencedor", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0])
+            if (chosen == JOptionPane.CLOSED_OPTION) return@addActionListener
+            val winner = options.getOrNull(chosen) ?: return@addActionListener
+            c.recordResult(winner)
+            // persist and refresh
+            AdicionarTime.updateCompeticao(c)
+            reloadPending(); reloadHistoryAndStandings()
+            // after marking, if no more pending matches, enable draw
+            drawBtn.isEnabled = c.pendingMatches().isEmpty()
+        }
+
+        resetBtn.addActionListener {
+            val ok = JOptionPane.showConfirmDialog(d, "Limpar histórico de partidas desta competição? (não afeta perdas já registradas)", "Confirmar", JOptionPane.YES_NO_OPTION)
+            if (ok == JOptionPane.YES_OPTION) { c.clearHistory(); reloadPending(); reloadHistoryAndStandings(); AdicionarTime.updateCompeticao(c) }
+        }
+
+
+        val main = JPanel(GridBagLayout())
+        val gbc = GridBagConstraints(); gbc.insets = Insets(8,8,8,8); gbc.fill = GridBagConstraints.BOTH
+        gbc.gridx=0; gbc.gridy=0; gbc.weightx = 0.45; gbc.weighty = 1.0; main.add(pendingScroll, gbc)
+        gbc.gridx=1; gbc.weightx = 0.1; main.add(center, gbc)
+        gbc.gridx=2; gbc.weightx = 0.45; main.add(historyScroll, gbc)
+
+        val foot = JPanel(); foot.background = TERTIARY; val closeBtn = styledButton("Fechar"); closeBtn.addActionListener { d.dispose() }; foot.add(closeBtn)
+
+        d.add(header, BorderLayout.NORTH)
+        d.add(main, BorderLayout.CENTER)
+        d.add(foot, BorderLayout.SOUTH)
+        d.setLocationRelativeTo(parent)
+        d.isVisible = true
+    }
+
 }

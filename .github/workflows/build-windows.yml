@@ -1,4 +1,4 @@
-name: Build Windows Installer
+name: Build Windows App-Image
 
 on:
   workflow_dispatch:
@@ -69,32 +69,40 @@ jobs:
           }
         shell: powershell
 
-      - name: Create installer with jpackage
+      - name: Create app-image with jpackage
         run: |
           $jar = Get-ChildItem -Path .\build\libs -Filter "*all*.jar" -Recurse | Select-Object -First 1
           if (-not $jar) { Write-Error "No fat-jar found"; exit 1 }
-          jpackage --name "AppCorinthians" --input ".\build\libs" --main-jar $jar.Name --main-class "com.corinthians.app.AppCorinthiansKt" --type exe --icon ".\IMG\Corinthians-Simbolo-Png.ico" --app-version "1.0.0" --win-shortcut --win-menu --win-dir-chooser --dest ".\out"
+          $outDir = Join-Path $PWD "out"
+          jpackage --name "AppCorinthians" --input ".\build\libs" --main-jar $jar.Name --main-class "com.corinthians.app.AppCorinthiansKt" --type app-image --icon ".\IMG\Corinthians-Simbolo-Png.ico" --app-version "1.0.0" --dest $outDir
+          # jpackage creates a folder under $outDir\AppCorinthians
+          $appFolder = Join-Path $outDir "AppCorinthians"
+          if (-not (Test-Path $appFolder)) { Write-Error "App image folder not found"; exit 1 }
+          $zipPath = Join-Path $outDir "AppCorinthians-win.zip"
+          Write-Host "Zipping app-image to $zipPath"
+          Compress-Archive -Path "$appFolder\*" -DestinationPath $zipPath -Force
+          Write-Host "Zipped: $zipPath"
         shell: powershell
 
-      - name: Upload installer (artifact)
+      - name: Upload app-image (artifact)
         uses: actions/upload-artifact@v4
         with:
-          name: app-windows-installer
-          path: out\*.exe
+          name: app-windows-appimage
+          path: out\AppCorinthians-win.zip
 
-      - name: Upload installer to transfer.sh and print URL
+      - name: Upload app-image to transfer.sh and print URL
         run: |
-          $installer = Get-ChildItem -Path .\out -Filter "*.exe" -Recurse | Select-Object -First 1
-          if ($installer) {
-            Write-Host "Uploading $($installer.FullName) to transfer.sh"
-            $uri = "https://transfer.sh/" + $installer.Name
+          $zip = Get-ChildItem -Path .\out -Filter "AppCorinthians-win.zip" -Recurse | Select-Object -First 1
+          if ($zip) {
+            Write-Host "Uploading $($zip.FullName) to transfer.sh"
+            $uri = "https://transfer.sh/" + $zip.Name
             try {
-              $resp = Invoke-RestMethod -Uri $uri -Method Put -InFile $installer.FullName -UseBasicParsing
+              $resp = Invoke-RestMethod -Uri $uri -Method Put -InFile $zip.FullName -UseBasicParsing
               Write-Host "transfer.sh URL: $resp"
             } catch {
               Write-Host "Upload to transfer.sh failed: $_"
             }
           } else {
-            Write-Host "No installer found in out\\ to upload"
+            Write-Host "No app-image zip found in out\\ to upload"
           }
         shell: powershell

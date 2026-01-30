@@ -40,7 +40,8 @@ object XmlDatabase {
                         val jidade = getText(jEl, "idade").toIntOrNull() ?: 0
                         val jpos = getText(jEl, "posicao")
                         val jcat = getText(jEl, "categoria")
-                        t.adicionarJogador(Jogador(jnome, jidade, jpos, jcat))
+                        val jtel = getText(jEl, "telefone")
+                        t.adicionarJogador(Jogador(jnome, jidade, jpos, jcat, jtel))
                     }
                 }
                 list.add(t)
@@ -86,7 +87,26 @@ object XmlDatabase {
                         val pEl = pNodes.item(j) as Element
                         val timeNome = getText(pEl, "time")
                         val categoria = getText(pEl, "categoria")
+                        // load perdas/eliminado if present
+                        val perdas = getText(pEl, "perdas").toIntOrNull() ?: 0
+                        val elim = (getText(pEl, "eliminado").lowercase() == "true")
                         c.addParticipacao(timeNome, categoria)
+                        // set the perdas/eliminado on the last added participacao
+                        val last = c.participacoes.lastOrNull()
+                        if (last != null) { last.perdas = perdas; last.eliminado = elim }
+                    }
+                }
+
+                // load history if present
+                val histEl = cEl.getElementsByTagName("historico").item(0) as? Element
+                if (histEl != null) {
+                    val pNodes = histEl.getElementsByTagName("partida")
+                    for (j in 0 until pNodes.length) {
+                        val pEl = pNodes.item(j) as Element
+                        val a = getText(pEl, "a")
+                        val b = getText(pEl, "b")
+                        val vencedor = getText(pEl, "vencedor").ifBlank { null }
+                        if (a.isNotBlank() && b.isNotBlank()) c.addHistoryMatch(a, b, vencedor)
                     }
                 }
                 result.add(c)
@@ -148,6 +168,7 @@ object XmlDatabase {
                     val jidade = doc.createElement("idade"); jidade.textContent = j.idade.toString(); jEl.appendChild(jidade)
                     val jpos = doc.createElement("posicao"); jpos.textContent = j.posicao; jEl.appendChild(jpos)
                     val jcat = doc.createElement("categoria"); jcat.textContent = j.categoria; jEl.appendChild(jcat)
+                    val jtel = doc.createElement("telefone"); jtel.textContent = j.telefone; jEl.appendChild(jtel)
                     jogadoresEl.appendChild(jEl)
                 }
                 tEl.appendChild(jogadoresEl)
@@ -175,6 +196,17 @@ object XmlDatabase {
                     partsEl.appendChild(pEl)
                 }
                 cEl.appendChild(partsEl)
+
+                // persist history
+                val histEl = doc.createElement("historico")
+                for (m in c.getHistory()) {
+                    val pm = doc.createElement("partida")
+                    val a = doc.createElement("a"); a.textContent = m.a; pm.appendChild(a)
+                    val b = doc.createElement("b"); b.textContent = m.b; pm.appendChild(b)
+                    val v = doc.createElement("vencedor"); v.textContent = m.winner ?: ""; pm.appendChild(v)
+                    histEl.appendChild(pm)
+                }
+                cEl.appendChild(histEl)
                 compsRoot.appendChild(cEl)
             }
             root.appendChild(compsRoot)
@@ -225,8 +257,8 @@ object XmlDatabase {
                     val jnome = doc.createElement("nome"); jnome.textContent = j.nome; jEl.appendChild(jnome)
                     val jidade = doc.createElement("idade"); jidade.textContent = j.idade.toString(); jEl.appendChild(jidade)
                     val jpos = doc.createElement("posicao"); jpos.textContent = j.posicao; jEl.appendChild(jpos)
-                    // write category
                     val jcat = doc.createElement("categoria"); jcat.textContent = j.categoria; jEl.appendChild(jcat)
+                    val jtel = doc.createElement("telefone"); jtel.textContent = j.telefone; jEl.appendChild(jtel)
                     jogadoresEl.appendChild(jEl)
                 }
                 tEl.appendChild(jogadoresEl)
@@ -253,6 +285,17 @@ object XmlDatabase {
                     partsEl.appendChild(pEl)
                 }
                 cEl.appendChild(partsEl)
+
+                // persist history
+                val histEl = doc.createElement("historico")
+                for (m in c.getHistory()) {
+                    val pm = doc.createElement("partida")
+                    val a = doc.createElement("a"); a.textContent = m.a; pm.appendChild(a)
+                    val b = doc.createElement("b"); b.textContent = m.b; pm.appendChild(b)
+                    val v = doc.createElement("vencedor"); v.textContent = m.winner ?: ""; pm.appendChild(v)
+                    histEl.appendChild(pm)
+                }
+                cEl.appendChild(histEl)
                 compsRoot.appendChild(cEl)
             }
             root.appendChild(compsRoot)
@@ -305,8 +348,8 @@ object XmlDatabase {
                     val jnome = doc.createElement("nome"); jnome.textContent = j.nome; jEl.appendChild(jnome)
                     val jidade = doc.createElement("idade"); jidade.textContent = j.idade.toString(); jEl.appendChild(jidade)
                     val jpos = doc.createElement("posicao"); jpos.textContent = j.posicao; jEl.appendChild(jpos)
-                    // write category
                     val jcat = doc.createElement("categoria"); jcat.textContent = j.categoria; jEl.appendChild(jcat)
+                    val jtel = doc.createElement("telefone"); jtel.textContent = j.telefone; jEl.appendChild(jtel)
                     jogadoresEl.appendChild(jEl)
                 }
                 tEl.appendChild(jogadoresEl)
@@ -328,9 +371,23 @@ object XmlDatabase {
                     val pEl = doc.createElement("participacao")
                     val tname = doc.createElement("time"); tname.textContent = p.timeNome; pEl.appendChild(tname)
                     val catEl = doc.createElement("categoria"); catEl.textContent = p.categoria; pEl.appendChild(catEl)
+                    // persist perdas and eliminado state
+                    val perdasEl = doc.createElement("perdas"); perdasEl.textContent = p.perdas.toString(); pEl.appendChild(perdasEl)
+                    val elimEl = doc.createElement("eliminado"); elimEl.textContent = p.eliminado.toString(); pEl.appendChild(elimEl)
                     partsEl.appendChild(pEl)
                 }
                 cEl.appendChild(partsEl)
+
+                // persist history
+                val histEl = doc.createElement("historico")
+                for (m in c.getHistory()) {
+                    val pm = doc.createElement("partida")
+                    val a = doc.createElement("a"); a.textContent = m.a; pm.appendChild(a)
+                    val b = doc.createElement("b"); b.textContent = m.b; pm.appendChild(b)
+                    val v = doc.createElement("vencedor"); v.textContent = m.winner ?: ""; pm.appendChild(v)
+                    histEl.appendChild(pm)
+                }
+                cEl.appendChild(histEl)
                 compsRoot.appendChild(cEl)
             }
             root.appendChild(compsRoot)

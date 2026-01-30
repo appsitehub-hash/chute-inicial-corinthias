@@ -167,36 +167,104 @@ object AdicionarTime {
             }
         }
         val t = Time(nome, tecnico, avaliacao)
-        times.add(t)
-        DB.XmlDatabase.saveTimes(times)
-        println("Time adicionado com sucesso: ${t.nome}")
+        val ok = addTimeObj(t)
+        if (ok) println("Time adicionado com sucesso: ${t.nome}") else println("Erro: não foi possível adicionar o time (nome vazio ou já existe).")
     }
 
-    // Public API for GUI
-    fun addTimeObj(t: Time) {
-        if (t.nome.isBlank()) return
+    // Returns true if added, false if rejected (blank name or duplicate)
+    fun addTimeObj(t: Time): Boolean {
+        val name = t.nome.trim()
+        if (name.isEmpty()) return false
+        // prevent duplicate team names (case-insensitive)
+        val exists = times.any { it.nome.equals(name, ignoreCase = true) }
+        if (exists) return false
         times.add(t)
         DB.XmlDatabase.saveTimes(times)
+        return true
     }
 
-    fun addPlayerToTime(timeNome: String, jogador: Jogador) {
+    // Adds player to time; returns true if added, false if rejected (phone already exists)
+    fun addPlayerToTime(timeNome: String, jogador: Jogador): Boolean {
         // do not allow creating teams with blank name
-        if (timeNome.isBlank()) return
+        if (timeNome.isBlank()) return false
+        // phone uniqueness check: if telefone non-empty and already registered, reject
+        val phone = jogador.telefone.trim()
+        if (phone.isNotEmpty()) {
+            val existingTeam = getTeamByPhone(phone)
+            if (existingTeam != null) {
+                // already registered under another team
+                return false
+            }
+        }
         val idx = times.indexOfFirst { it.nome == timeNome }
         if (idx >= 0) {
             times[idx].adicionarJogador(jogador)
         } else {
-            // if time not found, add time with this player
-            val nt = Time(timeNome, "", 0.0)
-            nt.adicionarJogador(jogador)
-            times.add(nt)
+            // create a new time only if name is not duplicate (case-insensitive)
+            val exists = times.any { it.nome.equals(timeNome, ignoreCase = true) }
+            if (exists) {
+                // shouldn't happen, but just in case, add to first matching
+                val f = times.indexOfFirst { it.nome.equals(timeNome, ignoreCase = true) }
+                if (f >= 0) times[f].adicionarJogador(jogador)
+            } else {
+                val nt = Time(timeNome, "", 0.0)
+                nt.adicionarJogador(jogador)
+                times.add(nt)
+            }
         }
         DB.XmlDatabase.saveTimes(times)
+        return true
     }
 
-    fun addCompeticaoObj(c: Competicao) {
+    // find team name by phone, or null
+    fun getTeamByPhone(telefone: String): String? {
+        val phone = telefone.trim()
+        if (phone.isEmpty()) return null
+        for (t in times) {
+            for (j in t.getJogadores()) {
+                if (j.telefone.trim() == phone) return t.nome
+            }
+        }
+        return null
+    }
+
+    // Returns true if added, false if duplicate or invalid name
+    fun addCompeticaoObj(c: Competicao): Boolean {
+        val name = c.nome.trim()
+        if (name.isEmpty()) return false
+        val exists = competicoes.any { it.nome.equals(name, ignoreCase = true) }
+        if (exists) return false
         competicoes.add(c)
         DB.XmlDatabase.saveCompeticoes(competicoes)
+        return true
+    }
+
+    // Update an existing competition (replace by name) or add if missing
+    fun updateCompeticao(c: Competicao) {
+        val idx = competicoes.indexOfFirst { it.nome == c.nome }
+        if (idx >= 0) competicoes[idx] = c else competicoes.add(c)
+        DB.XmlDatabase.saveCompeticoes(competicoes)
+    }
+
+    // Remove competition by name (returns true if removed)
+    fun removeCompeticaoByName(nome: String): Boolean {
+        val idx = competicoes.indexOfFirst { it.nome == nome }
+        if (idx >= 0) {
+            competicoes.removeAt(idx)
+            DB.XmlDatabase.saveCompeticoes(competicoes)
+            return true
+        }
+        return false
+    }
+
+    // Remove competition by index
+    fun removeCompeticaoAt(index: Int): Boolean {
+        if (index in competicoes.indices) {
+            competicoes.removeAt(index)
+            DB.XmlDatabase.saveCompeticoes(competicoes)
+            return true
+        }
+        return false
     }
 
     // GUI helpers: remove a player by name from a time and persist
