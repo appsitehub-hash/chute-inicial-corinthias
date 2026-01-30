@@ -17,20 +17,15 @@ application {
     mainClass.set("com.corinthians.app.AppCorinthiansKt")
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
+// Use jvm target for Kotlin compilation (don't force toolchain download)
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "17"
+}
+
+java {
+    // do not configure a strict toolchain here to avoid CI toolchain auto-download issues
 }
 
 tasks {
