@@ -21,10 +21,22 @@ jobs:
       - name: Ensure Gradle wrapper
         run: |
           if (-not (Test-Path "gradlew.bat")) {
-            echo "Gradle wrapper not found, generating..."
-            choco install gradle -y || true
-            gradle wrapper || true
-          } else { echo "Gradle wrapper present" }
+            Write-Host "Gradle wrapper not found, attempting to generate..."
+            try {
+              Write-Host "Installing gradle via choco..."
+              choco install gradle -y
+            } catch {
+              Write-Host "choco install gradle failed: $_"
+            }
+            if (Get-Command gradle -ErrorAction SilentlyContinue) {
+              Write-Host "Running 'gradle wrapper' to generate wrapper files"
+              gradle wrapper
+            } else {
+              Write-Host "gradle not available; skipping wrapper generation. Ensure gradlew is committed to the repo."
+            }
+          } else {
+            Write-Host "Gradle wrapper present"
+          }
         shell: powershell
 
       - name: Install ImageMagick (optional)
