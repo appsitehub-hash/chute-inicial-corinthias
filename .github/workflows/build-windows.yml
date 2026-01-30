@@ -18,27 +18,29 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Ensure Gradle wrapper
+      - name: Ensure Gradle wrapper or download Gradle 8.3
         run: |
           Write-Host "Checking for Gradle wrapper..."
           if (-not (Test-Path "gradlew.bat")) {
-            Write-Host "Gradle wrapper not found, attempting to generate..."
+            Write-Host "Gradle wrapper not found. Downloading Gradle 8.3 distribution..."
+            $gradleVersion = '8.3'
+            $zipUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-bin.zip"
+            $zipPath = Join-Path $env:TEMP "gradle-$gradleVersion-bin.zip"
+            $dest = Join-Path $env:USERPROFILE "gradle-$gradleVersion"
             try {
-              Write-Host "Installing gradle via choco..."
-              choco install gradle -y
+              Write-Host "Downloading $zipUrl to $zipPath"
+              Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -UseBasicParsing
+              Write-Host "Extracting to $env:USERPROFILE"
+              Expand-Archive -Path $zipPath -DestinationPath $env:USERPROFILE -Force
+              $gradleHome = Join-Path $env:USERPROFILE "gradle-$gradleVersion"
+              Write-Host "Adding $gradleHome\bin to PATH"
+              $env:PATH = "$gradleHome\bin;$env:PATH"
+              Write-Host "Generating Gradle wrapper using downloaded gradle"
+              gradle wrapper
             } catch {
-              Write-Host "choco install gradle failed: $_"
-            }
-
-            if (Get-Command gradle -ErrorAction SilentlyContinue) {
-              Write-Host "Running 'gradle wrapper' to generate wrapper files"
-              try {
-                gradle wrapper
-              } catch {
-                Write-Host "gradle wrapper failed: $_"
-              }
-            } else {
-              Write-Host "gradle not available; ensure 'gradlew.bat' is committed to the repo or install gradle in the runner."
+              Write-Host "Failed to download or use Gradle distribution: $_"
+            } finally {
+              if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
             }
           } else {
             Write-Host "Gradle wrapper present"
@@ -50,7 +52,15 @@ jobs:
         shell: powershell
 
       - name: Build fat jar
-        run: .\gradlew.bat clean shadowJar --no-daemon
+        run: |
+          if (Test-Path "gradlew.bat") {
+            Write-Host "Using gradlew.bat to build fat jar"
+            .\gradlew.bat clean shadowJar --no-daemon
+          } else {
+            Write-Host "Using system gradle to build fat jar"
+            gradle clean shadowJar --no-daemon
+          }
+        shell: powershell
 
       - name: Convert icon to ICO
         run: |
