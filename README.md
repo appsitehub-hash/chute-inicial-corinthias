@@ -15,3 +15,7 @@ Como testar rapidamente:
 
 1. Abra o projeto na sua IDE Kotlin/Java (IntelliJ) ou use o terminal.
 2. Compile e execute a classe principal `AppCorinthians` para abrir a interface.
+
+## Gerenciamento do Repositório
+
+- **[Como apagar o histórico de commits](COMO_APAGAR_HISTORICO.md)** - Guia para reduzir todo o histórico a um único commit.
